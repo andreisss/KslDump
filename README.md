@@ -54,11 +54,11 @@ Defender platform updates appear to drop the patched 82 KB version into `drivers
 
 ## Why The Old Driver Is Still On Disk
 
-The 333 KB KslD.sys is part of the Windows Component Store (https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/manage-the-component-store?view=windows-11). On the tested system, drivers\KslD.sys and its WinSxS copy share the same NTFS file ID, confirmed via fsutil hardlink list. This is https://learn.microsoft.com/en-us/archive/blogs/askcore/what-is-the-winsxs-directory-in-windows-2008-and-windows-vista-and-why-is-it-so-large — system files in System32 are projected from WinSxS via hardlinks.
+The 333 KB `drivers\KslD.sys` is part of the [Windows Component Store](https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/manage-the-component-store?view=windows-11). On the tested system, it and its WinSxS copy share the same NTFS file ID — confirmed via `fsutil hardlink list`. This is standard Windows behavior: system files in System32 are [projected from WinSxS via hardlinks](https://learn.microsoft.com/en-us/archive/blogs/askcore/what-is-the-winsxs-directory-in-windows-2008-and-windows-vista-and-why-is-it-so-large).
 
-The 82 KB patched version is deployed separately by https://learn.microsoft.com/en-us/defender-endpoint/microsoft-defender-antivirus-updates (KB4052623) into drivers\wd\, hardlinked to ProgramData\Microsoft\Windows Defender\Platform\. The component store's https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/clean-up-the-winsxs-folder?view=windows-11 (StartComponentCleanup) only removes components when a newer CBS version supersedes them, after a 30-day grace period. On the tested system, the 333 KB binary belongs to CBS component version 10.0.26100.7309 — the latest version. No newer CBS version exists, so there is nothing to supersede it and nothing for cleanup to remove.
+The 82 KB patched version is deployed separately by [Defender platform updates](https://learn.microsoft.com/en-us/defender-endpoint/microsoft-defender-antivirus-updates) (KB4052623) into `drivers\wd\`, hardlinked to `ProgramData\Microsoft\Windows Defender\Platform\`. The component store's [cleanup task](https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/clean-up-the-winsxs-folder?view=windows-11) (`StartComponentCleanup`) only removes components when a newer CBS version supersedes them, after a 30-day grace period. On the tested system, the 333 KB binary belongs to CBS component version `10.0.26100.7309` — the latest version. No newer CBS version exists, so there is nothing to supersede it and nothing for cleanup to remove.
 
-The fix was shipped through the Defender platform update channel, not through a CBS update. The Windows servicing stack still considers the vulnerable 333 KB version current and valid. If Microsoft eventually ships a CBS update that supersedes it, the old binary would be cleaned up after 30 days. Until then, it stays.
+**The fix was shipped through the Defender platform update channel, not through a CBS update.** The Windows servicing stack still considers the vulnerable 333 KB version current and valid. If Microsoft eventually ships a CBS update that supersedes it, the old binary would be cleaned up after 30 days. Until then, it stays.
 
 ---
 
@@ -160,17 +160,6 @@ Output:   Raw memory contents (up to Size bytes)
 | **Defender Behavior Monitor** | Yes | No behavioral detection triggered — the IOCTLs are to a trusted Microsoft driver |
 | **Defender Tamper Protection** | Yes | Tamper protection does not cover the KslD service registry key |
 | **Vulnerable Driver Blocklist** | N/A | Microsoft-signed drivers are excluded from the blocklist by design |
-
-### Credential Guard
-
-During testing, Credential Guard was fully configured:
-
-- `LsaCfgFlags = 1` (enabled via registry)
-- `SecurityServicesConfigured = {1}` (CG configured in WMI)
-- `VirtualizationBasedSecurityStatus = 2` (VBS reported as running)
-- `LsaIso.exe` actively running
-
-Despite all of this, extracted credentials showed `isIso=0` — **credentials were not isolated**. WMI reported `SecurityServicesRunning = {0}` and `VirtualMachineIsolation = False`, indicating CG was in a degraded state where LsaIso.exe runs but does not actually protect credential material.
 
 ---
 
