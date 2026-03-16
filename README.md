@@ -54,13 +54,7 @@ Defender platform updates appear to drop the patched 82 KB version into `drivers
 
 ## Why The Old Driver Is Still On Disk - personal theory
 
-The 333 KB drivers\KslD.sys is part of the Windows Component Store. On the tested system, it and the matching WinSxS copy had the same NTFS file ID, confirmed with fsutil hardlink list. That is normal Windows behavior: many files under System32 are linked from WinSxS through hardlinks.
-
-The 82 KB patched version appears to be delivered separately through Defender platform updates (KB4052623) into drivers\wd\, with links into ProgramData\Microsoft\Windows Defender\Platform\....
-
-StartComponentCleanup only removes component-store files when they have been replaced by a newer CBS version, usually after the normal cleanup delay. On the tested system, the 333 KB KslD.sys belonged to CBS component version 10.0.26100.7309, and no newer CBS version was present. Because of that, there was nothing for component cleanup to remove.
-
-In practice, the patched 82 KB driver was delivered through the Defender platform update path, while the older 333 KB driver remained the current CBS-backed copy on disk. Until Microsoft ships a newer CBS version that replaces it, the old file stays.
+Microsoft’s public documentation shows that KB4052623 delivers Defender platform updates, including a historical move of Defender drivers to System32\drivers\wd, while Windows servicing keeps WinSxS-backed component-store files via NTFS hard links and only removes superseded component versions during cleanup. On the tested system, this explains why the newer 82 KB KslD.sys could arrive through the Defender platform-update path while the older 333 KB System32\drivers\KslD.sys remained present as the current CBS-backed component-store copy until superseded by a newer CBS version.
 
 ---
 
