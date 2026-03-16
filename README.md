@@ -6,6 +6,12 @@ KslDump extracts credentials from PPL-protected LSASS using only Microsoft-signe
 
 <img width="1517" height="258" alt="image" src="https://github.com/user-attachments/assets/89ca7a1f-e3c1-4d7a-9812-dc7f7ddc3d4a" />
 
+  ## Support
+
+  This tool is free and open source. If it helped your red team work, consider supporting development:
+
+  [![Sponsor](https://img
+
 ---
 
 ## The Vulnerability
