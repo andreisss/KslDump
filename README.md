@@ -32,19 +32,6 @@ The only gate to the device handle is a **process name string** stored in a regi
 
 ---
 
-## The Incomplete Patch
-
-Microsoft identified the issue and partially fixed SubCmd 12 in a newer build. But they left the vulnerable binary on disk, sitting right next to the patch.
-
-| | `drivers\wd\KslD.sys` (82 KB) | `drivers\KslD.sys` (333 KB) |
-|---|---|---|
-| **Version** | 1.1.25111 (newer) | 1.1.25081 (older) |
-| **Loaded by default** | Yes (`ImagePath` points here) | No (orphaned on disk) |
-| **Intel TDT engine** | Removed | Included (~250 KB extra code) |
-| **MmCopyMemory** | Resolved then **set to NULL** | Resolved and **stored** |
-| **SubCmd 12** | Returns `STATUS_NOT_SUPPORTED` | **Works — arbitrary read** |
-| **Signed by** | Microsoft | Microsoft |
-
 The difference is one line in `CCommand::Initialize`:
 
 ```c
