@@ -1,16 +1,17 @@
 # KslDump - BMVD (Bring the Microsoft Vulnerable Driver) 
 
+
+  [![GitHub stars](https://img.shields.io/github/stars/andreisss/KslDump?style=social)](https://github.com/andreisss/KslDump/stargazers)
+  [![GitHub forks](https://img.shields.io/github/forks/andreisss/KslDump?style=social)](https://github.com/andreisss/KslDump/network)
+  [![GitHub downloads](https://img.shields.io/github/downloads/andreisss/KslDump/total)](https://github.com/andreisss/KslDump/releases)
+  [![Sponsor](https://img.shields.io/badge/Sponsor-❤-red)](https://github.com/sponsors/andreisss)
+  [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+
 > **Why bring your own knife when Defender already left one in the kitchen?**
 
 KslDump extracts credentials from PPL-protected LSASS using only Microsoft-signed components. No exploit is deployed. No driver is loaded. The entire attack chain ships pre-installed with Windows Defender. Microsoft patched the running version (wd\KslD.sys) by nulling out MmCopyMemory, but left the old vulnerable version (drivers\KslD.sys) sitting on disk. The attacker doesn't bring anything — they just point the service back to what Microsoft forgot to clean up.
 
 <img width="1517" height="258" alt="image" src="https://github.com/user-attachments/assets/89ca7a1f-e3c1-4d7a-9812-dc7f7ddc3d4a" />
-
-  ## Support
-
-  This tool is free and open source. If it helped your red team work, consider supporting development:
-
-  [![Sponsor](https://img.shields.io/badge/Sponsor-❤-red)](https://github.com/sponsors/andreisss)
 
 ---
 
