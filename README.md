@@ -4,19 +4,7 @@
 
 KslDump extracts credentials from PPL-protected LSASS using only Microsoft-signed components. No exploit is deployed. No driver is loaded. The entire attack chain ships pre-installed with Windows Defender. Microsoft patched the running version (wd\KslD.sys) by nulling out MmCopyMemory, but left the old vulnerable version (drivers\KslD.sys) sitting on disk. The attacker doesn't bring anything — they just point the service back to what Microsoft forgot to clean up.
 
-  ┌────────────────┬───────────────────────────────────────────┬─────────────────────────────────────────────────────────────────────────────────────────────┐
-  │                │                   BYOVD                   │                        BMVD (Bring the Microsoft Vulnerable Driver)                         │
-  ├────────────────┼───────────────────────────────────────────┼─────────────────────────────────────────────────────────────────────────────────────────────┤
-  │ Driver source  │ Attacker brings a 3rd-party signed driver │ Already on disk, shipped by Microsoft                                                       │
-  ├────────────────┼───────────────────────────────────────────┼─────────────────────────────────────────────────────────────────────────────────────────────┤
-  │ Driver signing │ Needs a legitimately signed driver        │ Microsoft-signed (part of Defender)                                                         │
-  ├────────────────┼───────────────────────────────────────────┼─────────────────────────────────────────────────────────────────────────────────────────────┤
-  │ Driver loading │ Must load a new driver (detectable)       │ Just changes ImagePath to an existing .sys                                                  │
-  ├────────────────┼───────────────────────────────────────────┼─────────────────────────────────────────────────────────────────────────────────────────────┤
-  │ Detection      │ EDR can flag new driver loads             │ No new driver on disk, no new signing cert — just a registry value change + service restart │
-  ├────────────────┼───────────────────────────────────────────┼─────────────────────────────────────────────────────────────────────────────────────────────┤
-  │ Artifacts      │ Foreign .sys file on disk                 │ Zero new files — both drivers are stock Windows                                             │
-  └────────────────┴───────────────────────────────────────────┴─────────────────────────────────────────────────────────────────────────────────────────────┘
+<img width="1517" height="258" alt="image" src="https://github.com/user-attachments/assets/89ca7a1f-e3c1-4d7a-9812-dc7f7ddc3d4a" />
 
 ---
 
