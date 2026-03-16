@@ -52,13 +52,15 @@ Defender platform updates appear to drop the patched 82 KB version into `drivers
 
 ---
 
-## Why The Old Driver Is Still On Disk
+## Why The Old Driver Is Still On Disk - personal theory
 
-The 333 KB `drivers\KslD.sys` is part of the [Windows Component Store](https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/manage-the-component-store?view=windows-11). On the tested system, it and its WinSxS copy share the same NTFS file ID — confirmed via `fsutil hardlink list`. This is standard Windows behavior: system files in System32 are [projected from WinSxS via hardlinks](https://learn.microsoft.com/en-us/archive/blogs/askcore/what-is-the-winsxs-directory-in-windows-2008-and-windows-vista-and-why-is-it-so-large).
+The 333 KB drivers\KslD.sys is part of the Windows Component Store. On the tested system, it and the matching WinSxS copy had the same NTFS file ID, confirmed with fsutil hardlink list. That is normal Windows behavior: many files under System32 are linked from WinSxS through hardlinks.
 
-The 82 KB patched version is deployed separately by [Defender platform updates](https://learn.microsoft.com/en-us/defender-endpoint/microsoft-defender-antivirus-updates) (KB4052623) into `drivers\wd\`, hardlinked to `ProgramData\Microsoft\Windows Defender\Platform\`. The component store's [cleanup task](https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/clean-up-the-winsxs-folder?view=windows-11) (`StartComponentCleanup`) only removes components when a newer CBS version supersedes them, after a 30-day grace period. On the tested system, the 333 KB binary belongs to CBS component version `10.0.26100.7309` — the latest version. No newer CBS version exists, so there is nothing to supersede it and nothing for cleanup to remove.
+The 82 KB patched version appears to be delivered separately through Defender platform updates (KB4052623) into drivers\wd\, with links into ProgramData\Microsoft\Windows Defender\Platform\....
 
-**The fix was shipped through the Defender platform update channel, not through a CBS update.** The Windows servicing stack still considers the vulnerable 333 KB version current and valid. If Microsoft eventually ships a CBS update that supersedes it, the old binary would be cleaned up after 30 days. Until then, it stays.
+StartComponentCleanup only removes component-store files when they have been replaced by a newer CBS version, usually after the normal cleanup delay. On the tested system, the 333 KB KslD.sys belonged to CBS component version 10.0.26100.7309, and no newer CBS version was present. Because of that, there was nothing for component cleanup to remove.
+
+In practice, the patched 82 KB driver was delivered through the Defender platform update path, while the older 333 KB driver remained the current CBS-backed copy on disk. Until Microsoft ships a newer CBS version that replaces it, the old file stays.
 
 ---
 
