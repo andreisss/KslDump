@@ -153,19 +153,6 @@ Output:   Raw memory contents (up to Size bytes)
 ```
 ---
 
-## What Gets Bypassed
-
-| Protection | Bypassed | Why |
-|-----------|----------|-----|
-| **KASLR** | Yes | SubCmd 2 hands CR3 + IDTR directly to usermode — no guessing needed |
-| **PPL (RunAsPPL = 2)** | Yes | Physical reads via MmCopyMemory are not subject to process protection levels |
-| **Windows Defender Real-Time** | Yes | Defender cannot detect IOCTL calls to its own driver — the attack surface IS Defender |
-| **Defender Behavior Monitor** | Yes | No behavioral detection triggered — the IOCTLs are to a trusted Microsoft driver |
-| **Defender Tamper Protection** | Yes | Tamper protection does not cover the KslD service registry key |
-| **Vulnerable Driver Blocklist** | N/A | Microsoft-signed drivers are excluded from the blocklist by design |
-
----
-
 ### Requirements
 
 - Local administrator privileges
