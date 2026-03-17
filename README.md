@@ -14,7 +14,9 @@ KslDump extracts credentials from PPL-protected LSASS using only Microsoft-signe
 <img width="1517" height="258" alt="image" src="https://github.com/user-attachments/assets/89ca7a1f-e3c1-4d7a-9812-dc7f7ddc3d4a" />
 
 
-![12345](https://github.com/user-attachments/assets/57a647ce-f8cd-441b-97bf-8bea5604bdb0)
+
+https://github.com/user-attachments/assets/78dfce25-56b3-4eb8-9de2-7c183601e597
+
 
 ---
 
