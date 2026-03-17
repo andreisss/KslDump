@@ -13,6 +13,9 @@ KslDump extracts credentials from PPL-protected LSASS using only Microsoft-signe
 
 <img width="1517" height="258" alt="image" src="https://github.com/user-attachments/assets/89ca7a1f-e3c1-4d7a-9812-dc7f7ddc3d4a" />
 
+
+![12345](https://github.com/user-attachments/assets/57a647ce-f8cd-441b-97bf-8bea5604bdb0)
+
 ---
 
 ## The Vulnerability
@@ -27,6 +30,8 @@ The driver accepts IOCTL `0x222044` with multiple sub-commands that provide **un
 |--------|-----------|--------|
 | **2** | Returns CR3, IDTR, and other CPU control registers to usermode | Instant KASLR defeat |
 | **12** | Calls `MmCopyMemory()` with attacker-controlled address and size | Arbitrary kernel/physical memory read |
+
+
 
 ### The "Access Control"
 
