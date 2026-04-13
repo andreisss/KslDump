@@ -7,6 +7,15 @@
   [![Sponsor](https://img.shields.io/badge/Sponsor-❤-red)](https://github.com/sponsors/andreisss)
   [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 
+
+## Important context
+
+I reported the issue to Microsoft on **7 March 2026**. However, almost 20 days earlier, the game-hacking community had already reversed and publicly discussed it.
+From my side, I do not follow their projects and I was not aware of any of this. It is also clear that these are two completely separate and unrelated projects.
+
+### References
+- [Avantguard blog post](https://avantguard.io/en/blog/erfahrungsbericht-ki-gest%C3%BCtzte-bof-entwicklung-im-red-team)
+
 > **Why bring your own knife when Defender already left one in the kitchen?**
 
 KslDump extracts credentials from PPL-protected LSASS using only Microsoft-signed components. No exploit is deployed. No driver is loaded. The entire attack chain ships pre-installed with Windows Defender. Microsoft patched the running version (wd\KslD.sys) by nulling out MmCopyMemory, but left the old vulnerable version (drivers\KslD.sys) sitting on disk. The attacker doesn't bring anything — they just point the service back to what Microsoft forgot to clean up.
